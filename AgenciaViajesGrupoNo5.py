@@ -35,26 +35,29 @@ def report(users, packages):
         print("No hay registros")
 
 def create_package(packages, i):
-    print("Seleccione una opción:")
-    print("1. Seleccionar paquete turístico existente")
-    print("2. Crear nuevo paquete turístico")
-    
-    option = int(input())
-    
-    if option == 1:
-        select_package(packages, i)
-    elif option == 2:
+
         print("Digite la fecha de ida de su viaje: (dd/mm/aa)")
         start_date = input()
         
         print("Digite la fecha de vuelta de su viaje: (dd/mm/aa)")
         end_date = input()
         
-        print("Elige la ciudad de origen (Bogotá, Cali, Medellín, Buenaventura):")
+        print("Elige la ciudad de origen (Bogotá, Cali, Medellín, Cartagena):")
         city = input().strip().lower()
         
-        print("Elige la ciudad de destino (Bogotá, Cali, Medellín, Buenaventura):")
+        print("Elige la ciudad de destino (Bogotá, Cali, Medellín, Cartagena):")
         end_city = input().strip().lower()
+        
+        print("Digite el lugar de hospedaje (1.Hotel, 2.Apartamento):")
+        hotel = int(input())
+        
+        if hotel == 1:
+        hotel_price = members * 100
+        elif hotel == 2:
+        hotel_price = members * 250
+        else:
+        hotel_price = 0
+        return hotel_price
         
         print("Digite el lugar de hospedaje (Hotel, Apartamento):")
         hospedaje = input().strip().lower()
@@ -75,7 +78,7 @@ def create_package(packages, i):
         flight_prices = {
             ('bogotá', 'cali'): 130, ('cali', 'bogotá'): 130,
             ('cali', 'medellín'): 120, ('medellín', 'cali'): 120,
-            ('cali', 'buenaventura'): 60, ('buenaventura', 'cali'): 60
+            ('cali', 'Cartagena'): 60, ('Cartagena', 'cali'): 60
         }
         flight_price = flight_prices.get((city, end_city), 0)
         
@@ -149,23 +152,6 @@ def view_packages(packages):
     else:
         print("No hay paquetes turísticos disponibles.")
 
-def reservation():
-    print("Por favor indique cuántas personas son:")
-    members = int(input())
-    
-    print("Por favor indique cuál hotel desea:")
-    print("1. Hotel sencillo, 2. Hotel premium")
-    hotel = int(input())
-    
-    if hotel == 1:
-        hotel_price = members * 100
-    elif hotel == 2:
-        hotel_price = members * 250
-    else:
-        hotel_price = 0
-    
-    return hotel_price
-
 def pay(hotel_price, flight_price):
     total_price = hotel_price + flight_price
     print(f"El total a pagar es de: ${total_price}")
@@ -189,10 +175,9 @@ def main():
         print("1. Registrar cliente")
         print("2. Crear paquete turístico")
         print("3. Ver paquetes turísticos")
-        print("4. Realizar reserva")
-        print("5. Realizar pago")
-        print("6. Generar reportes")
-        print("7. Salir")
+        print("4. Realizar pago")
+        print("5. Generar reportes")
+        print("6. Salir")
         
         option = int(input())
         
@@ -204,20 +189,13 @@ def main():
         elif option == 3:
             view_packages(packages)
         elif option == 4:
-            print("Por favor indique cuántas personas:")
-            members = int(input())
-            print("Por favor indique cuál hotel desea:")
-            print("1. Hotel sencillo, 2. Hotel premium")
-            hotel = int(input())
-            hotel_price = reservation(members, hotel)
-        elif option == 5:
             if 'hotel_price' in locals() and 'flight_price' in locals():
                 pay(hotel_price, flight_price)
             else:
                 print("Debe realizar primero una reserva.")
-        elif option == 6:
+        elif option == 5:
             report(users, packages)
-        elif option == 7:
+        elif option == 6:
             print("Hasta pronto")
             break
         else:
