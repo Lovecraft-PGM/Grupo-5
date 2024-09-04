@@ -156,7 +156,7 @@ def main():
             else:
                 print("Primero debe registrarse")
             print("Hasta pronto")  
-        # elif option == 3:
+        ## elif option == 3:
         #     # ViewPackages(defaultPackages);
         #     print("Hasta pronto")  
         elif option == 3:
