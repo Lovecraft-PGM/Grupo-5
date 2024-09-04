@@ -1,206 +1,182 @@
-# Definición de funciones
+def registerUser(id, count, save):
+    id.append(len(id) + 1)  # Agregar el siguiente ID a la lista
+    username = input("Por favor ingrese su nombre completo:");
+    mail = input("Por favor ingrese su correo electronico:");
+    citizenshipCard = input("Por favor ingrese la cédula:");
+    print("Usuario registrado exitosamente!")
 
-def register_user(users, i):
-    print("Por favor ingrese su nombre completo:")
-    username = input()
-    
-    print("Por favor ingrese su cédula:")
-    citizenship_card = input()
-    
-    print("Por favor ingrese su email:")
-    email = input()
-    
-    print("Por favor ingrese su número de teléfono:")
-    telefono = input()
-    
-    users.append({
-        'username': username,
-        'citizenship_card': citizenship_card,
-        'email': email,
-        'telefono': telefono
+    save.append({
+        "id": id[-1],  
+        "username": username,
+        "citizenshipCard": citizenshipCard,
+        "email": mail
     })
 
-def report(users, packages):
-    if len(users) > 0:
-        print("Registros actuales:", len(users))
-        for user in users:
-            print(f"ID: {user['id']} Nombre: {user['username']} Cédula: {user['citizenship_card']}")
-            # Encontrar y mostrar el paquete asociado (si existe)
-            user_package = next((pkg for pkg in packages if pkg['user_id'] == user['id']), None)
-            if user_package:
-                print(f"Paquete turístico: Ciudad origen: {user_package['city']} | Ciudad destino: {user_package['end_city']} | Fecha de ida: {user_package['start_date']} | Fecha de vuelta: {user_package['end_date']} | Precio total: ${user_package['total_price']}")
-            else:
-                print("No hay paquete asociado.")
+
+def report(save):
+    if len(save) > 0:
+        print("Registros actuales:", len(save))
+        for i in save:
+            print(f"ID: {i["id"]} Nombre: {i["username"]} Cédula: {i["citizenshipCard"]} , Correo: {i["email"]}");
     else:
-        print("No hay registros")
+        print("No hay registros de usuarios")
 
-def create_package(packages, i):
+def createPackage(packageNew):
 
-        print("Digite la fecha de ida de su viaje: (dd/mm/aa)")
-        start_date = input()
-        
-        print("Digite la fecha de vuelta de su viaje: (dd/mm/aa)")
-        end_date = input()
-        
-        print("Elige la ciudad de origen (Bogotá, Cali, Medellín, Cartagena):")
-        city = input().strip().lower()
-        
-        print("Elige la ciudad de destino (Bogotá, Cali, Medellín, Cartagena):")
-        end_city = input().strip().lower()
-        
-        print("Digite el lugar de hospedaje (1.Hotel, 2.Apartamento):")
-        hotel = int(input())
-        
-        if hotel == 1:
-        hotel_price = members * 100
-        elif hotel == 2:
-        hotel_price = members * 250
-        else:
-        hotel_price = 0
-        return hotel_price
-        
-        print("Digite el lugar de hospedaje (Hotel, Apartamento):")
-        hospedaje = input().strip().lower()
-        
-        print("Digite el número de habitaciones:")
-        habitaciones = int(input())
-        
-        print("Digite el número de personas:")
-        personas = int(input())
-        
-        print("Digite el número de adultos:")
-        adultos = int(input())
-        
-        print("Digite el número de niños:")
-        menores = int(input())
-        
-        # Precios de vuelos
-        flight_prices = {
-            ('bogotá', 'cali'): 130, ('cali', 'bogotá'): 130,
-            ('cali', 'medellín'): 120, ('medellín', 'cali'): 120,
-            ('cali', 'Cartagena'): 60, ('Cartagena', 'cali'): 60
-        }
-        flight_price = flight_prices.get((city, end_city), 0)
-        
-        # Calcular el precio del hospedaje
-        if hospedaje == 'hotel':
-            hotel_price = personas * 100
-        elif hospedaje == 'apartamento':
-            hotel_price = personas * 70  # Precio para apartamento, ajuste si es necesario
-        else:
-            hotel_price = 0
-        
-        # Calcular el precio total
-        total_price = flight_price + hotel_price
-        
-        # Guardar el paquete turístico
-        packages.append({
-            'user_id': i,
-            'city': city.capitalize(),
-            'end_city': end_city.capitalize(),
-            'start_date': start_date,
-            'end_date': end_date,
-            'hospedaje': hospedaje,
-            'habitaciones': habitaciones,
-            'personas': personas,
-            'adultos': adultos,
-            'menores': menores,
-            'flight_price': flight_price,
-            'hotel_price': hotel_price,
-            'total_price': total_price
-        })
-    else:
-        print("Opción inválida")
+    # Inicializar variables
+    cities = ["CTG", "CLO", "MDE", "BOG"];
+    members = int(input("Ingrese el número de miembros: "));
 
-def select_package(packages, user_id):
-    if len(packages) == 0:
-        print("No hay paquetes turísticos disponibles para seleccionar.")
-        return
-    
-    print("Seleccione un paquete turístico existente:")
-    for idx, pkg in enumerate(packages, start=1):
-        print(f"{idx}. Ciudad de origen: {pkg['city']}, Ciudad de destino: {pkg['end_city']}, Fecha de ida: {pkg['start_date']}, Fecha de vuelta: {pkg['end_date']}, Precio total: ${pkg['total_price']}")
-    
-    choice = int(input())
-    
-    if 1 <= choice <= len(packages):
-        selected_package = packages[choice - 1]
-        # Asociar el paquete seleccionado al usuario
-        selected_package['user_id'] = user_id
-        print("Paquete seleccionado y asociado correctamente.")
-    else:
-        print("Opción inválida")
-
-def view_packages(packages):
-    if len(packages) > 0:
-        print("Paquetes turísticos disponibles:")
-        for i, package in enumerate(packages, start=1):
-            print(f"Paquete {i}:")
-            print(f"Ciudad de origen: {package['city']}")
-            print(f"Ciudad de destino: {package['end_city']}")
-            print(f"Fecha de ida: {package['start_date']}")
-            print(f"Fecha de vuelta: {package['end_date']}")
-            print(f"Tipo de hospedaje: {'Hotel' if package['hospedaje'] == 'hotel' else 'Apartamento'}")
-            print(f"Número de habitaciones: {package['habitaciones']}")
-            print(f"Número de personas: {package['personas']}")
-            print(f"Número de adultos: {package['adultos']}")
-            print(f"Número de niños: {package['menores']}")
-            print(f"Precio del vuelo: ${package['flight_price']}")
-            print(f"Precio del hospedaje: ${package['hotel_price']}")
-            print(f"Precio total: ${package['total_price']}")
-            print("-----------------------------------")
-    else:
-        print("No hay paquetes turísticos disponibles.")
-
-def pay(hotel_price, flight_price):
-    total_price = hotel_price + flight_price
-    print(f"El total a pagar es de: ${total_price}")
-
-# Paquetes turísticos predeterminados
-default_packages = [
-    {'city': 'Bogotá', 'end_city': 'Cali', 'start_date': '01/10/2024', 'end_date': '07/10/2024', 'hospedaje': 'hotel', 'habitaciones': 2, 'personas': 2, 'adultos': 2, 'menores': 0, 'flight_price': 130, 'hotel_price': 200, 'total_price': 330},
-    {'city': 'Cali', 'end_city': 'Medellín', 'start_date': '15/11/2024', 'end_date': '20/11/2024', 'hospedaje': 'apartamento', 'habitaciones': 1, 'personas': 1, 'adultos': 1, 'menores': 0, 'flight_price': 120, 'hotel_price': 70, 'total_price': 190},
-    {'city': 'Medellín', 'end_city': 'Buenaventura', 'start_date': '05/12/2024', 'end_date': '10/12/2024', 'hospedaje': 'hotel', 'habitaciones': 3, 'personas': 4, 'adultos': 2, 'menores': 2, 'flight_price': 60, 'hotel_price': 400, 'total_price': 460}
-]
-
-def main():
-    users = []
-    packages = default_packages.copy()  # Inicializamos con paquetes predeterminados
-    i = 1
-    hotel_price = 0
-    flight_price = 0
-    
+    # Validar ciudad de origen
     while True:
-        print("---------- Menú de inicio ----------")
-        print("1. Registrar cliente")
-        print("2. Crear paquete turístico")
-        print("3. Ver paquetes turísticos")
-        print("4. Realizar pago")
-        print("5. Generar reportes")
-        print("6. Salir")
-        
-        option = int(input())
-        
-        if option == 1:
-            register_user(users, i)
-            i += 1
-        elif option == 2:
-            create_package(packages, i)
-        elif option == 3:
-            view_packages(packages)
-        elif option == 4:
-            if 'hotel_price' in locals() and 'flight_price' in locals():
-                pay(hotel_price, flight_price)
-            else:
-                print("Debe realizar primero una reserva.")
-        elif option == 5:
-            report(users, packages)
-        elif option == 6:
-            print("Hasta pronto")
+        city = input("Por favor escriba la ciudad donde se encuentra (Bogotá(BOG), Cartagena(CTG), Cali(CLO), Medellín(MDE)): ").upper();
+        if city in cities:
             break
-        else:
-            print("Opción inválida")
+        print("Valor inválido. Por favor, ingrese una ciudad válida diferente a la de origen.")
 
-# Ejecutar el programa
-main()
+    # Validar ciudad de destination
+    while True:
+        endCity = input("Por favor escriba la ciudad donde quieres viajar (Bogotá(BOG), Cartagena(CTG), Cali(CLO), Medellín(MDE)): ").upper();
+        if endCity in cities and endCity != city:
+            break
+        print("Valor inválido. Por favor, ingrese una ciudad válida diferente a la de origen.")
+
+    # Obtener fechas
+    startDate = input("Por favor ingrese la fecha de ida (DD/MM/AA): ")
+    endDate = input("Por favor ingrese la fecha de vuelta (DD/MM/AA): ")
+
+    #Precio del vuelo 
+    flightPrices = {
+        ("CLO", "BOG"): 260, ("BOG", "CLO"): 260,
+        ("CLO", "MDE"): 240, ("MDE","CLO"): 240,
+        ("CLO", "CTG"): 170, ("CTG", "CLO"): 170, 
+    }
+    #Sacar los datos del diccionario 
+    flightPrice = flightPrices.get((city, endCity), 0) * 2 * members
+    
+    hotel = int(input("Por favor indique cual hotel desea\n"
+    ".1. Hotel sencillo, 2. Hotel premium: "));
+   
+    # Precios de hospedaje
+    if hotel == 1:
+        hotelPrice = members*100
+    elif hotel == 2:
+        hotelPrice = members*250
+    else:
+        print("Opción de hotel inválida")
+    
+    
+    print(f"El price total del vuelo es: ${flightPrice}")
+    print(f"El price total por la hospedad de {members} personas en un {hotel}, es: ${hotelPrice}")
+    
+    totalPrice = flightPrice + hotelPrice;
+    
+    packageNew.append({
+        "city": city,
+        "endCity": endCity,
+        "startDate": startDate,
+        "endDate": endDate,
+        "members": members,
+        "flightPrice": flightPrice,
+        "hotel": hotel,
+        "hotelPrice": hotelPrice,
+        "totalPrice": totalPrice
+    })
+
+# def ViewPackages(defaultPackages):
+#     print("Paquetes turísticos nacionales en Colombia:")
+#     for i, package in defaultPackages.items():
+#         if package["destination"] in ["Amazonas", "Quindío", "Cancún", "Bogotá", ...]:  # Agregar más destinations colombianos
+#             print(f"{i}. {package['namePackage']} - {package['destination']}")
+#             print(f"  Duración: {package['days']} días")
+#             print(f"  Precio: ${package['price']}")
+#             print(f"  Actividades: {', '.join(package['members'])}")
+#             print("--------------" )
+  
+            
+# defaultPackages = {
+#   1: {
+#     "namePackage": "Aventura en la Selva",
+#     "destination": "Amazonas",
+#     "days": 7,
+#     "price": 1500,
+#     "members": 2
+#   },
+#   2: {
+#     "namePackage": "Relax en la Playa",
+#     "destination": "San Andres",  
+#     "days": 5,
+#     "price": 1200,
+#     "members": 4
+#   },
+#   3: {
+#     "namePackage": "Valle del cocora",
+#     "destination": "Quindio",
+#     "days": 10,
+#     "price": 2500,
+#     "members": 3
+#   }
+# }
+
+# for idPackage, informationPackage in defaultPackages.items():
+#     print(f"Paquete {idPackage}:")
+#     print(f"  Nombre: {informationPackage['namePackage']}")
+#     print(f"  Destino: {informationPackage['destination']}")
+#     print(f"  Duración: {informationPackage['days']} días")
+#     print(f"  Precio: ${informationPackage['price']}")
+#     print(f"  Cantidad personas:{informationPackage['members']}")
+#     print("------------------------------")   
+
+      
+def main():
+    count = 0
+    
+    # Inicializamos la lista vacia
+    save = []  
+    packageNew = []
+    defaultPackages = []
+    package = []
+   
+    id = []  
+
+    while True:
+        print("---------- Menú de inicio ----------\n"
+              "1. Registrar cliente\n"
+              "2. Crear paquete turistico\n"
+              "3. Generar reportes\n"
+              "4. Salir")
+
+        option = int(input("Elige una opcion:"))
+
+        if option == 1:
+            registerUser(id, count, save)
+        elif option == 2:
+            if save:
+                createPackage(packageNew);
+            else:
+                print("Primero debe registrarse")
+            print("Hasta pronto")  
+        # elif option == 3:
+        #     # ViewPackages(defaultPackages);
+        #     print("Hasta pronto")  
+        elif option == 3:
+            report(save)
+            if packageNew:
+                for package in packageNew:
+                    print("----------  Detalles del Paquete  ----------")
+                    print(f"Fecha de viaje: {package["startDate"]} al {package["endDate"]}")
+                    print(f"Vuelo de ida y vuelta {package["city"]} a {package["endCity"]}")
+                    print(f"Cantidad de personas: {package["members"]}")
+                    hotel = "Hotel sencillo" if package["hotel"] == 1 else "Hotel premium"
+                    print(f"Hotel: {hotel}")
+                    print(f"Precio total: ${package["totalPrice"]:.2f}")
+            else:
+                print("No hay packages registrados")
+        elif option == 4:
+            print("Hasta pronto")  
+        else: 
+            print("Por favor ingrese una opción valida");   
+
+# Ejecución del programa
+main()   
            
